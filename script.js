@@ -12,33 +12,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const modeToggleBtn = document.getElementById('modeToggleBtn');
     const revertBtn = document.getElementById('revertBtn');
     const finalizeBtn = document.getElementById('finalizeBtn');
+    const fullscreenModal = document.getElementById('fullscreenModal');
     let isCheckOutMode = false;
 
     let studentsData = [];
     let originalData = [];
 
-    // Load Data from LocalStorage 
     function loadSavedTable() {
         const savedData = localStorage.getItem('studentsData');
         if (savedData) {
             studentsData = JSON.parse(savedData);
-            refreshAttendanceTable(); 
+            refreshAttendanceTable();
         }
     }
 
-    // Save the Current Live Table to LocalStorage
     function saveLiveTable() {
         localStorage.setItem('studentsData', JSON.stringify(studentsData));
     }
 
-    // Initialize Check-In Mode by Default
     function initializeCheckInMode() {
         document.querySelectorAll('.check-out-time, .total-time').forEach(cell => cell.style.display = 'none');
         modeToggleBtn.innerText = 'Switch to Check-Out Mode';
         isCheckOutMode = false;
     }
 
-    // Handle Login
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const username = usernameInput.value.trim();
@@ -49,14 +46,13 @@ document.addEventListener('DOMContentLoaded', () => {
             loginContainer.style.display = 'none';
             appContainer.style.display = 'block';
             initializeCheckInMode();
-            loadSavedTable();  // Load the saved table 
+            loadSavedTable();
         } else {
             loginError.style.display = 'block';
             loginError.textContent = "Invalid username or password";
         }
     });
 
-    // Handle Excel File Upload
     const fileUpload = document.getElementById('fileUpload');
     fileUpload.addEventListener('change', handleFileUpload);
 
@@ -70,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
                 studentsData = XLSX.utils.sheet_to_json(firstSheet);
 
-                originalData = JSON.parse(JSON.stringify(studentsData)); 
+                originalData = JSON.parse(JSON.stringify(studentsData));
 
                 studentsData.forEach(student => {
                     student['Check-In Time'] = 'N/A';
@@ -81,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 refreshAttendanceTable();
                 alert('Student data successfully uploaded and ready for scanning!');
-                saveLiveTable();  
+                saveLiveTable();
             };
             reader.readAsArrayBuffer(file);
         } else {
@@ -89,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Process S Number Scan
     sNumberInput.addEventListener('input', function (event) {
         if (event.target.value.length >= 6) {
             const sNumber = event.target.value.trim();
@@ -98,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Process Scan and Handle Check-In/Check-Out
     function processScan(sNumber) {
         const student = studentsData.find(student => student['ID'] == sNumber);
 
@@ -108,13 +102,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!isCheckOutMode) {
                 student['Check-In Time'] = timeNow;
                 student['Attendance'] = 'Present';
+                showStudentFullscreen(student, timeNow, 'Check-In');
             } else {
                 student['Check-Out Time'] = timeNow;
-                calculateTotalTime(student); 
+                calculateTotalTime(student);
             }
 
             refreshAttendanceTable(sNumber);
-            saveLiveTable();  
+            saveLiveTable();
         } else {
             alert('Student not found!');
         }
@@ -122,13 +117,12 @@ document.addEventListener('DOMContentLoaded', () => {
         sNumberInput.focus();
     }
 
-    // Toggle Between Check-In and Check-Out Modes
     modeToggleBtn.addEventListener('click', function () {
         isCheckOutMode = !isCheckOutMode;
         modeToggleBtn.innerText = isCheckOutMode ? 'Switch to Check-In Mode' : 'Switch to Check-Out Mode';
         toggleCheckOutMode();
         refreshAttendanceTable();
-        saveLiveTable();  
+        saveLiveTable();
     });
 
     function toggleCheckOutMode() {
@@ -139,15 +133,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Revert to Original Data
     revertBtn.addEventListener('click', function () {
-        studentsData = JSON.parse(JSON.stringify(originalData)); 
+        studentsData = JSON.parse(JSON.stringify(originalData));
         refreshAttendanceTable();
-        saveLiveTable();  
+        saveLiveTable();
         alert('Changes have been reverted to the original data.');
     });
 
-    // Finalize Data
     finalizeBtn.addEventListener('click', function () {
         const rows = attendanceTableBody.rows;
         for (let i = 0; i < rows.length; i++) {
@@ -159,14 +151,13 @@ document.addEventListener('DOMContentLoaded', () => {
             student['Check-In Time'] = row.cells[3].innerText;
             student['Check-Out Time'] = isCheckOutMode ? row.cells[4].innerText : student['Check-Out Time'];
             student['Attendance'] = row.cells[6].innerText;
-            calculateTotalTime(student); 
+            calculateTotalTime(student);
         }
 
-        saveLiveTable();  // Save the Finalized Data to LocalStorage
+        saveLiveTable();
         alert('Data has been finalized!');
     });
 
-    // Calculate Total Time Based on Check-In and Check-Out
     function calculateTotalTime(student) {
         const checkIn = new Date(student['Check-In Time']);
         const checkOut = new Date(student['Check-Out Time']);
@@ -180,13 +171,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Filter Functionality
+    function showStudentFullscreen(student, timeNow, actionType) {
+        document.getElementById('studentFullName').innerText = student['Name'];
+        document.getElementById('studentLab').innerText = `Lab: ${student['LAB']}`;
+        document.getElementById('studentSeat').innerText = `Seat Number: ${student['SEAT NUMBER']}`;
+        document.getElementById('studentTimeIn').innerText = `${actionType} Time: ${timeNow}`;
+
+        fullscreenModal.style.display = 'flex';
+
+        setTimeout(() => {
+            fullscreenModal.style.display = 'none';
+            sNumberInput.focus();
+        }, 5000);
+    }
+
     filterInput.addEventListener('input', function () {
         const query = filterInput.value.toLowerCase().trim();
         refreshAttendanceTable(null, query);
     });
 
-    // Refresh Attendance Table
     function refreshAttendanceTable(sNumber = null, filterQuery = '') {
         attendanceTableBody.innerHTML = '';
 
@@ -233,14 +236,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const attendanceCell = row.insertCell(6);
             attendanceCell.contentEditable = true;
-            attendanceCell.innerText = student['Attendance'] || 'Absent'; 
+            attendanceCell.innerText = student['Attendance'] || 'Absent';
             applyAttendanceColor(attendanceCell, student['Attendance'] || 'Absent');
 
             attendanceCell.addEventListener('input', function () {
                 const value = attendanceCell.innerText.trim();
                 applyAttendanceColor(attendanceCell, value);
                 student['Attendance'] = value;
-                saveLiveTable(); 
+                saveLiveTable();
             });
 
             const deleteCell = row.insertCell(7);
@@ -249,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
             deleteBtn.addEventListener('click', () => {
                 studentsData.splice(index, 1);
                 refreshAttendanceTable();
-                saveLiveTable();  
+                saveLiveTable();
             });
             deleteCell.appendChild(deleteBtn);
 
