@@ -17,12 +17,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let studentsData = [];
     let originalData = [];
 
-    // Load data from localStorage (saved table)
+    // Load data from localStorage 
     function loadSavedTable() {
         const savedData = localStorage.getItem('studentsData');
         if (savedData) {
             studentsData = JSON.parse(savedData);
-            refreshAttendanceTable(); // Refresh the table with saved data
+            refreshAttendanceTable(); 
         }
     }
 
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
             loginContainer.style.display = 'none';
             appContainer.style.display = 'block';
             initializeCheckInMode();
-            loadSavedTable();  // Load the saved table when the user logs in
+            loadSavedTable();  // Load the saved table 
         } else {
             loginError.style.display = 'block';
             loginError.textContent = "Invalid username or password";
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
                 studentsData = XLSX.utils.sheet_to_json(firstSheet);
 
-                originalData = JSON.parse(JSON.stringify(studentsData)); // Deep clone to store original data
+                originalData = JSON.parse(JSON.stringify(studentsData)); 
 
                 studentsData.forEach(student => {
                     student['Check-In Time'] = 'N/A';
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 refreshAttendanceTable();
                 alert('Student data successfully uploaded and ready for scanning!');
-                saveLiveTable();  // Save table after file upload
+                saveLiveTable();  
             };
             reader.readAsArrayBuffer(file);
         } else {
@@ -110,11 +110,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 student['Attendance'] = 'Present';
             } else {
                 student['Check-Out Time'] = timeNow;
-                calculateTotalTime(student); // Calculate total time
+                calculateTotalTime(student); 
             }
 
             refreshAttendanceTable(sNumber);
-            saveLiveTable();  // Save the table after each scan
+            saveLiveTable();  
         } else {
             alert('Student not found!');
         }
@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modeToggleBtn.innerText = isCheckOutMode ? 'Switch to Check-In Mode' : 'Switch to Check-Out Mode';
         toggleCheckOutMode();
         refreshAttendanceTable();
-        saveLiveTable();  // Save the table after mode switch
+        saveLiveTable();  
     });
 
     function toggleCheckOutMode() {
@@ -141,9 +141,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Revert to original data
     revertBtn.addEventListener('click', function () {
-        studentsData = JSON.parse(JSON.stringify(originalData)); // Revert to the original data
+        studentsData = JSON.parse(JSON.stringify(originalData)); 
         refreshAttendanceTable();
-        saveLiveTable();  // Save the reverted table to localStorage
+        saveLiveTable();  
         alert('Changes have been reverted to the original data.');
     });
 
@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
             student['Check-In Time'] = row.cells[3].innerText;
             student['Check-Out Time'] = isCheckOutMode ? row.cells[4].innerText : student['Check-Out Time'];
             student['Attendance'] = row.cells[6].innerText;
-            calculateTotalTime(student); // Recalculate total time if times are edited
+            calculateTotalTime(student); 
         }
 
         saveLiveTable();  // Save the finalized data to localStorage
@@ -233,14 +233,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const attendanceCell = row.insertCell(6);
             attendanceCell.contentEditable = true;
-            attendanceCell.innerText = student['Attendance'] || 'Absent'; // Default to 'Absent'
+            attendanceCell.innerText = student['Attendance'] || 'Absent'; 
             applyAttendanceColor(attendanceCell, student['Attendance'] || 'Absent');
 
             attendanceCell.addEventListener('input', function () {
                 const value = attendanceCell.innerText.trim();
                 applyAttendanceColor(attendanceCell, value);
                 student['Attendance'] = value;
-                saveLiveTable(); // Save on attendance change
+                saveLiveTable(); 
             });
 
             const deleteCell = row.insertCell(7);
@@ -249,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
             deleteBtn.addEventListener('click', () => {
                 studentsData.splice(index, 1);
                 refreshAttendanceTable();
-                saveLiveTable();  // Save after deletion
+                saveLiveTable();  
             });
             deleteCell.appendChild(deleteBtn);
 
