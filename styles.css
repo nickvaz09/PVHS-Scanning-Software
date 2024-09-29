@@ -1,0 +1,217 @@
+/* General styling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, #a8d0e6, #f0f4f8); /* Gradient background */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column; /* Make the body column-oriented */
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    text-align: center;
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 900px; /* Adjusted max width */
+}
+
+/* Make the scanning section sticky */
+.scanner-form {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: white; /* Keep it consistent with the rest of the app */
+    padding: 15px;
+    border-bottom: 2px solid #ddd;
+}
+
+/* Ensure the table has scrollable overflow */
+.attendance-table-container {
+    max-height: 400px; /* You can adjust this height */
+    overflow-y: auto;
+    margin-top: 20px;
+}
+
+/* Login page styling */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.login-card {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    max-width: 600px; 
+    width: 100%;
+    text-align: center;
+}
+
+.login-card h2 {
+    font-size: 24px; 
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+}
+
+.input-wrapper {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.input-wrapper i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: gray; 
+}
+
+.login-form input {
+    padding: 10px; 
+    padding-left: 8px;
+    font-size: 16px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    width: 100%; 
+    transition: border-color 0.3s;
+}
+
+.login-form input::placeholder {
+    padding-left: 0;
+}
+
+.login-form input:focus {
+    border-color: #007acc;
+    outline: none;
+}
+
+.login-form button {
+    padding: 12px;
+    background-color: #6eb1d6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+.login-form button:hover {
+    background-color: #007acc;
+}
+
+.login-error {
+    color: red;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* Fullscreen modal styling with PVHS colors */
+.fullscreen-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #6eb1d6; 
+    color: white;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 9999;
+}
+
+.fullscreen-content {
+    font-size: 36px;
+    color: white;
+}
+
+.fullscreen-modal h1 {
+    font-size: 72px;
+    margin-bottom: 20px;
+}
+
+.fullscreen-modal p {
+    font-size: 36px;
+    margin: 10px 0;
+}
+
+/* input fields */
+.modern-input {
+    font-size: 16px;
+    padding: 10px;
+    width: 100%;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+}
+
+.modern-input:focus {
+    border-color: #007acc;
+    outline: none;
+}
+
+/* Attendance table */
+.attendance-table {
+    width: 100%;
+    margin-top: 30px;
+    border-collapse: collapse;
+}
+
+.attendance-table th,
+.attendance-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.attendance-table th {
+    background-color: #6eb1d6;
+    color: white;
+}
+
+.present {
+    color: green;
+    font-weight: bold;
+}
+
+.absent {
+    color: red;
+    font-weight: bold;
+}
+
+/* Advanced Button for Excel */
+.advanced-btn {
+    background-color: #007acc;
+    color: white;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-top: 30px; /* Add space between table and button */
+}
+
+.advanced-btn:hover {
+    background-color: #005f99;
+    transform: translateY(-2px);
+}
+

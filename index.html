@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PVHS Scanning System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>  
+    <!-- Login Form -->
+    <div id="loginContainer" class="login-container">
+        <div class="login-card">
+            <h2>Login to PVHS Scanning System</h2>
+            <form id="loginForm" class="login-form">
+                <div class="input-wrapper">
+                    <i class="icon-user"></i>
+                    <input type="text" id="username" placeholder="Username" required autofocus>
+                </div>
+                <div class="input-wrapper">
+                    <i class="icon-lock"></i>
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+                <button type="submit">Login</button>
+                <p id="loginError" class="login-error" style="display: none;">Invalid username or password</p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Content (Hidden until login) -->
+    <div id="appContainer" class="container" style="display: none;">
+        <h1>PVHS Scanning System</h1>
+        <p>Upload an Excel File for Student Data and Then Scan the Student ID</p>
+
+        <!-- Excel file upload -->
+        <form id="uploadForm" class="upload-form">
+            <label for="fileUpload" class="file-label">Upload Student Data (Excel):</label>
+            <input type="file" id="fileUpload" accept=".xlsx" class="file-input modern-input" />
+        </form>
+
+        <!-- S Number input field for scanning -->
+        <form id="scanForm" class="scanner-form">
+            <label for="sNumberInput" class="input-label">Scan S Number:</label>   
+            <input type="text" id="sNumberInput" placeholder="Waiting for scan..." autofocus autocomplete="off" class="input-field modern-input" />
+        </form>
+
+        <!-- Unified Search Filter -->
+        <div class="filter-container">
+            <input type="text" id="filterInput" placeholder="Search by Name, Seat, Lab" class="modern-input">
+        </div>
+
+        <!-- Action Buttons Below the Filter -->
+        <div class="action-buttons">
+            <button id="finalizeBtn" class="advanced-btn">Confirm Data</button>
+            <button id="revertBtn" class="advanced-btn">Revert to Original Data</button>
+            <button id="modeToggleBtn" class="advanced-btn">Switch to Check-Out Mode</button>
+        </div>
+
+        <!-- Live Attendance Table -->
+        <h2>Live Attendance Table</h2>
+        <table id="liveAttendanceTable" class="attendance-table">
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>Lab</th>
+                    <th>Seat Number</th>
+                    <th>Check-In Time</th>
+                    <th class="check-out-time">Check-Out Time</th>
+                    <th class="total-time">Total Time</th>
+                    <th>Attendance</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="attendanceTableBody"></tbody>
+        </table>
+
+        <!-- Download Excel Button Below the Table -->
+        <button id="downloadExcelBtn" class="advanced-btn small-btn">Download Updated Excel</button>
+    </div>
+
+    <!-- Fullscreen modal for student info -->
+    <div id="fullscreenModal" class="fullscreen-modal">
+        <div class="fullscreen-content">  
+            <h1 id="studentFullName"></h1>
+            <p id="studentLab"></p>
+            <p id="studentSeat"></p>
+            <p id="studentTimeIn"></p>
+        </div>
+    </div>
+
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
