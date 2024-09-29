@@ -1,4 +1,4 @@
-/* General styling */
+/* General Styling */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(to right, #a8d0e6, #f0f4f8); 
@@ -37,7 +37,7 @@ body {
     margin-top: 20px;
 }
 
-/* Login page styling */
+/* Login Page Styling */
 .login-container {
     display: flex;
     flex-direction: column;
@@ -120,7 +120,7 @@ body {
     text-align: center;
 }
 
-/* Fullscreen modal styling with PVHS colors */
+/* Fullscreen Modal Styling with PVHS Colors */
 .fullscreen-modal {
     display: none;
     position: fixed;
@@ -151,7 +151,7 @@ body {
     margin: 10px 0;
 }
 
-/* input fields */
+/* Input Fields */
 .modern-input {
     font-size: 16px;
     padding: 10px;
@@ -167,7 +167,7 @@ body {
     outline: none;
 }
 
-/* Attendance table */
+/* Live Attendance Table */
 .attendance-table {
     width: 100%;
     margin-top: 30px;
