@@ -1,11 +1,11 @@
 /* General styling */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(to right, #a8d0e6, #f0f4f8); /* Gradient background */
+    background: linear-gradient(to right, #a8d0e6, #f0f4f8); 
     margin: 0;
     padding: 0;
     display: flex;
-    flex-direction: column; /* Make the body column-oriented */
+    flex-direction: column; 
     justify-content: flex-start;
     align-items: center;
     min-height: 100vh;
@@ -18,23 +18,21 @@ body {
     border-radius: 10px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 900px; /* Adjusted max width */
+    max-width: 900px;
 }
 
-/* Make the scanning section sticky */
 .scanner-form {
     position: -webkit-sticky;
     position: sticky;
     top: 0;
     z-index: 100;
-    background-color: white; /* Keep it consistent with the rest of the app */
+    background-color: white; 
     padding: 15px;
     border-bottom: 2px solid #ddd;
 }
 
-/* Ensure the table has scrollable overflow */
 .attendance-table-container {
-    max-height: 400px; /* You can adjust this height */
+    max-height: 400px; 
     overflow-y: auto;
     margin-top: 20px;
 }
@@ -207,7 +205,7 @@ body {
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s, transform 0.2s;
-    margin-top: 30px; /* Add space between table and button */
+    margin-top: 30px; 
 }
 
 .advanced-btn:hover {
