@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let studentsData = [];
     let originalData = [];
 
-    // Load data from localStorage 
+    // Load Data from LocalStorage 
     function loadSavedTable() {
         const savedData = localStorage.getItem('studentsData');
         if (savedData) {
@@ -26,19 +26,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Save the current live table to localStorage
+    // Save the Current Live Table to LocalStorage
     function saveLiveTable() {
         localStorage.setItem('studentsData', JSON.stringify(studentsData));
     }
 
-    // Initialize Check-In mode by default
+    // Initialize Check-In Mode by Default
     function initializeCheckInMode() {
         document.querySelectorAll('.check-out-time, .total-time').forEach(cell => cell.style.display = 'none');
         modeToggleBtn.innerText = 'Switch to Check-Out Mode';
         isCheckOutMode = false;
     }
 
-    // Handle login
+    // Handle Login
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const username = usernameInput.value.trim();
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Handle Excel file upload
+    // Handle Excel File Upload
     const fileUpload = document.getElementById('fileUpload');
     fileUpload.addEventListener('change', handleFileUpload);
 
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Process S number scan
+    // Process S Number Scan
     sNumberInput.addEventListener('input', function (event) {
         if (event.target.value.length >= 6) {
             const sNumber = event.target.value.trim();
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Process scan and handle Check-In/Check-Out
+    // Process Scan and Handle Check-In/Check-Out
     function processScan(sNumber) {
         const student = studentsData.find(student => student['ID'] == sNumber);
 
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sNumberInput.focus();
     }
 
-    // Toggle between Check-In and Check-Out modes
+    // Toggle Between Check-In and Check-Out Modes
     modeToggleBtn.addEventListener('click', function () {
         isCheckOutMode = !isCheckOutMode;
         modeToggleBtn.innerText = isCheckOutMode ? 'Switch to Check-In Mode' : 'Switch to Check-Out Mode';
@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Revert to original data
+    // Revert to Original Data
     revertBtn.addEventListener('click', function () {
         studentsData = JSON.parse(JSON.stringify(originalData)); 
         refreshAttendanceTable();
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('Changes have been reverted to the original data.');
     });
 
-    // Finalize data
+    // Finalize Data
     finalizeBtn.addEventListener('click', function () {
         const rows = attendanceTableBody.rows;
         for (let i = 0; i < rows.length; i++) {
@@ -162,11 +162,11 @@ document.addEventListener('DOMContentLoaded', () => {
             calculateTotalTime(student); 
         }
 
-        saveLiveTable();  // Save the finalized data to localStorage
+        saveLiveTable();  // Save the Finalized Data to LocalStorage
         alert('Data has been finalized!');
     });
 
-    // Calculate total time based on Check-In and Check-Out
+    // Calculate Total Time Based on Check-In and Check-Out
     function calculateTotalTime(student) {
         const checkIn = new Date(student['Check-In Time']);
         const checkOut = new Date(student['Check-Out Time']);
@@ -180,13 +180,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Filter functionality
+    // Filter Functionality
     filterInput.addEventListener('input', function () {
         const query = filterInput.value.toLowerCase().trim();
         refreshAttendanceTable(null, query);
     });
 
-    // Refresh attendance table
+    // Refresh Attendance Table
     function refreshAttendanceTable(sNumber = null, filterQuery = '') {
         attendanceTableBody.innerHTML = '';
 
