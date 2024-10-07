@@ -314,17 +314,116 @@ document.addEventListener('DOMContentLoaded', () => {
             width: 70%;
         }
         
+        .data-box-container {
+            display: flex;
+            flex-direction: column;
+            height: 520px;
+            margin-bottom: 30px;
+        }
+
         .data-box {
             background-color: #ffffff;
             border-radius: 10px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 20px;
-            flex-grow: 1;
+            padding: 25px;
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.5s ease;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 25px;
         }
-        
-        .data-box div {
+
+        .data-box-bottom {
+            background-color: #f0f4f8;
+        }
+
+        .data-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .data-box-title {
+            font-weight: bold;
+            color: #4a90e2;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .data-item {
             margin-bottom: 10px;
+            width: 100%;
+            font-size: 1em;
+        }
+
+        .data-label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .placeholder-text {
+            text-align: center;
+            color: #999;
+            font-style: italic;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+
+        .placeholder-icon {
+            font-size: 3em;
+            color: #4a90e2;
+            margin-bottom: 15px;
+            animation: pulse 2s infinite;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-align: center;
+            animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 0.6; transform: scale(1); }
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+
+        .scrolling-table td {
+            text-align: left;
+        }
+
+        .status-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f0f4f8;
+            border-radius: 10px;
+        }
+
+        /* Remove center alignment for seat number */
+        .scrolling-table td:nth-child(3) {
+            text-align: left;
+        }
+
+        .scrolling-table td:nth-child(3) {
+            text-align: center;
         }
         
         .scrolling-table-container {
@@ -402,7 +501,7 @@ document.addEventListener('DOMContentLoaded', () => {
             height: 10px;
             border-radius: 50%;
             margin-right: 5px;
-            margin-left: 10px; /* Add this line to move the circle to the right */
+            margin-left: 10px;
         }
 
         .status-ready {
@@ -419,7 +518,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         #scanStatus {
             margin-right: 5px;
-            margin-left: 5px; /* Add this line to create space between "Status:" and the circle */
+            margin-left: 5px;
         }
 
         #cooldownTimer {
@@ -437,8 +536,17 @@ document.addEventListener('DOMContentLoaded', () => {
     
     <div class="main-content">
         <div class="left-panel">
-            <div id="infoBox" class="data-box">
-                <span id="dataPlaceholder" class="placeholder">No data scanned yet.</span>
+            <div class="data-box-container">
+                <div id="infoBoxTop" class="data-box data-box-top">
+                    <div class="data-content">
+                        <span id="dataPlaceholderTop" class="placeholder">No data scanned yet.</span>
+                    </div>
+                </div>
+                <div id="infoBoxBottom" class="data-box data-box-bottom">
+                    <div class="data-content">
+                        <span id="dataPlaceholderBottom" class="placeholder">No previous data.</span>
+                    </div>
+                </div>
             </div>
             <div class="timer">Time Elapsed: <span id="elapsedTime">00:00:00</span></div>
             <div class="status">
@@ -465,193 +573,229 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
 
     <script>
-    const studentsData = ${JSON.stringify(studentsData)};
-    const scrollingListBody = document.getElementById('scrollingListBody');
-    const infoBox = document.getElementById('infoBox');
-    const dataPlaceholder = document.getElementById('dataPlaceholder');
-    const scanStatus = document.getElementById('scanStatus');
-    const statusIndicator = document.querySelector('.status-indicator');
+// DOM Elements
+const scrollingListBody = document.getElementById('scrollingListBody');
+const infoBoxTop = document.getElementById('infoBoxTop');
+const infoBoxBottom = document.getElementById('infoBoxBottom');
+const scanStatus = document.getElementById('scanStatus');
+const statusIndicator = document.querySelector('.status-indicator');
+const elapsedTimeElement = document.getElementById('elapsedTime');
 
-    let isScanningEnabled = true;
-    let scanTimeout;
-    let cooldownInterval;
+// State variables
+let isScanningEnabled = true;
+let scanTimeout;
+let cooldownTimer;
+let seconds = 0;
+let scrollPosition = 0;
+let scrollSpeed = 0.5;
 
-    const sNumberInput = document.createElement('input');
-    sNumberInput.setAttribute('type', 'text');
-    sNumberInput.setAttribute('id', 'sNumberInput');
-    sNumberInput.style.opacity = '0';
-    sNumberInput.style.position = 'absolute';
-    document.body.appendChild(sNumberInput);
+// Assume studentsData is provided from the server
+const studentsData = ${JSON.stringify(studentsData)};
 
-    // Automatically focus the input field when user clicks anywhere
-    document.addEventListener('click', () => {
-        if (isScanningEnabled) {
-            sNumberInput.focus();
-        }
-    });
-    sNumberInput.focus(); // Initial focus
+// Create hidden input for scanning
+const sNumberInput = createHiddenInput();
 
-    // Populate the table with scrolling data
-    studentsData.forEach((student) => {
-        const row = document.createElement('tr');
-        row.innerHTML = \`
-            <td>\${student['Name']}</td>
-            <td>\${student['LAB']}</td>
-            <td>\${student['SEAT NUMBER']}</td>
-        \`;
-        scrollingListBody.appendChild(row);
-    });
+// Initialize the page
+initializePage();
 
-    // Timer functionality
-    let seconds = 0;
-    function updateTimer() {
-        seconds++;
-        const hours = Math.floor(seconds / 3600);
-        const minutes = Math.floor((seconds % 3600) / 60);
-        const secs = seconds % 60;
-        document.getElementById('elapsedTime').textContent = 
-            \`\${hours.toString().padStart(2, '0')}:\${minutes.toString().padStart(2, '0')}:\${secs.toString().padStart(2, '0')}\`;
-    }
+// Event Listeners
+document.addEventListener('click', focusScanInput);
+sNumberInput.addEventListener('input', handleScan);
+document.querySelector('.scrolling-table-container').addEventListener('mouseenter', () => { scrollSpeed = 0; });
+document.querySelector('.scrolling-table-container').addEventListener('mouseleave', () => { scrollSpeed = 0.5; });
+
+function createHiddenInput() {
+    const input = document.createElement('input');
+    input.setAttribute('type', 'text');
+    input.setAttribute('id', 'sNumberInput');
+    input.style.opacity = '0';
+    input.style.position = 'absolute';
+    document.body.appendChild(input);
+    return input;
+}
+
+function initializePage() {
+    initializeBoxes();
+    populateTable();
+    updateStatus('ready');
     setInterval(updateTimer, 1000);
+    setTimeout(scrollList, 1000);
+    sNumberInput.focus();
+}
 
-    // Handle scanning and display student data in the info box
-    sNumberInput.addEventListener('input', function (event) {
-        if (!isScanningEnabled) return;
+function initializeBoxes() {
+    const currentScanContent = \`
+        <div class="placeholder-icon">📷</div>
+        <span class="placeholder-text">No data scanned yet</span>
+        <span class="placeholder-text">Please scan a student ID</span>
+    \`;
+    
+    const previousScanContent = \`
+        <span class="placeholder-text">No previous data</span>
+    \`;
+    
+    updateInfoBox(infoBoxTop, 'Current Scan', currentScanContent);
+    updateInfoBox(infoBoxBottom, 'Previous Scan', previousScanContent);
+}
 
-        const sNumber = event.target.value.trim();
-        if (sNumber.length >= 6) {
-            const student = studentsData.find(stud => stud['ID'] === sNumber);
-            if (student) {
-                // Disable scanning
-                isScanningEnabled = false;
-                updateStatus('cooldown');
-                startCooldownTimer(5);
-                sNumberInput.blur();
+function populateTable() {
+    scrollingListBody.innerHTML = studentsData.map(student => \`
+        <tr>
+            <td>\${student.Name}</td>
+            <td>\${student.LAB}</td>
+            <td>\${student['SEAT NUMBER']}</td>
+        </tr>
+    \`).join('');
+}
 
-                dataPlaceholder.style.display = 'none';
-                infoBox.innerHTML = '';
+function focusScanInput() {
+    if (isScanningEnabled) {
+        sNumberInput.focus();
+    }
+}
 
-                const nameDiv = document.createElement('div');
-                const labDiv = document.createElement('div');
-                const seatDiv = document.createElement('div');
+function handleScan(event) {
+    if (!isScanningEnabled) return;
 
-                nameDiv.innerHTML = "<strong>Name:</strong> <span>" + (student['Name'] || 'N/A') + "</span>";
-                labDiv.innerHTML = "<strong>Lab:</strong> <span>" + (student['LAB'] || 'N/A') + "</span>";
-                seatDiv.innerHTML = "<strong>Seat:</strong> <span>" + (student['SEAT NUMBER'] || 'N/A') + "</span>";
-
-                infoBox.appendChild(nameDiv);
-                infoBox.appendChild(labDiv);
-                infoBox.appendChild(seatDiv);
-
-                // Highlight the corresponding row in the table
-                const rows = scrollingListBody.querySelectorAll('tr');
-                rows.forEach(row => row.classList.remove('highlighted-row'));
-                const matchingRow = Array.from(rows).find(row => row.cells[0].textContent === student['Name']);
-                if (matchingRow) {
-                    matchingRow.classList.add('highlighted-row');
-                    matchingRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-
-                // Clear any existing timeout
-                if (scanTimeout) {
-                    clearTimeout(scanTimeout);
-                }
-
-                // Re-enable scanning and return to placeholder after 5 seconds
-                scanTimeout = setTimeout(() => {
-                    infoBox.innerHTML = '<span id="dataPlaceholder" class="placeholder">No data scanned yet.</span>';
-                    rows.forEach(row => row.classList.remove('highlighted-row'));
-                    isScanningEnabled = true;
-                    updateStatus('ready');
-                    sNumberInput.value = ''; // Clear input
-                    sNumberInput.focus();
-                }, 5000);
-            } else {
-                infoBox.innerHTML = '<span style="color:red;">Student not found!</span>';
-                updateStatus('unknown');
-                setTimeout(() => {
-                    infoBox.innerHTML = '<span id="dataPlaceholder" class="placeholder">No data scanned yet.</span>';
-                    sNumberInput.value = ''; // Clear input
-                    updateStatus('ready');
-                }, 3000);
-            }
+    const sNumber = event.target.value.trim();
+    if (sNumber.length >= 6) {
+        const student = studentsData.find(stud => stud.ID === sNumber);
+        if (student) {
+            processValidScan(student);
+        } else {
+            handleUnknownStudent();
         }
-    });
+        sNumberInput.value = ''; // Clear input
+    }
+}
 
-    function updateStatus(status) {
-        switch(status) {
-            case 'ready':
-                statusIndicator.className = 'status-indicator status-ready';
-                scanStatus.textContent = 'Ready to Scan';
-                scanStatus.style.color = 'var(--status-green)';
-                break;
-            case 'cooldown':
-                statusIndicator.className = 'status-indicator status-cooldown';
-                scanStatus.textContent = 'Cooldown';
-                scanStatus.style.color = 'var(--status-yellow)';
-                break;
-            case 'unknown':
-                statusIndicator.className = 'status-indicator status-unknown';
-                scanStatus.textContent = 'Unknown ID';
-                scanStatus.style.color = 'var(--status-red)';
-                break;
-        }
+function processValidScan(student) {
+    isScanningEnabled = false;
+    updateStatus('cooldown');
+    startCooldownTimer(5);
+
+    const studentInfo = \`
+        <div class="data-item"><span class="data-label">Name:</span> \${student.Name}</div>
+        <div class="data-item"><span class="data-label">Lab:</span> \${student.LAB}</div>
+        <div class="data-item"><span class="data-label">Seat:</span> \${student['SEAT NUMBER']}</div>
+    \`;
+
+    updateInfoBox(infoBoxTop, 'Current Scan', studentInfo);
+    highlightTableRow(student.Name);
+
+    if (scanTimeout) {
+        clearTimeout(scanTimeout);
     }
 
-    function startCooldownTimer(seconds) {
-        let timeLeft = seconds;
+    scanTimeout = setTimeout(() => {
+        updateInfoBox(infoBoxBottom, 'Previous Scan', studentInfo);
+        resetTopInfoBox();
+        isScanningEnabled = true;
+        updateStatus('ready');
+        sNumberInput.focus();
+    }, 5000);
+}
+
+function updateInfoBox(infoBox, title, content) {
+    infoBox.innerHTML = \`
+        <div class="data-box-title">\${title}</div>
+        <div class="data-content">\${content}</div>
+    \`;
+}
+
+function resetTopInfoBox() {
+    const currentScanContent = \`
+        <div class="placeholder-icon">📷</div>
+        <span class="placeholder-text">No data scanned yet</span>
+        <span class="placeholder-text">Please scan a student ID</span>
+    \`;
+    updateInfoBox(infoBoxTop, 'Current Scan', currentScanContent);
+}
+
+function handleUnknownStudent() {
+    const errorContent = \`
+        <div class="placeholder-icon">❌</div>
+        <div class="error-message">Student not found!</div>
+        <span class="placeholder-text">Please try again</span>
+    \`;
+    updateInfoBox(infoBoxTop, 'Current Scan', errorContent);
+    updateStatus('unknown');
+    setTimeout(() => {
+        resetTopInfoBox();
+        updateStatus('ready');
+        isScanningEnabled = true;
+    }, 3000);
+}
+
+function highlightTableRow(studentName) {
+    const rows = scrollingListBody.querySelectorAll('tr');
+    rows.forEach(row => {
+        if (row.cells[0].textContent === studentName) {
+            row.classList.add('highlighted-row');
+            row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+            row.classList.remove('highlighted-row');
+        }
+    });
+}
+
+function updateStatus(status) {
+    statusIndicator.className = 'status-indicator status-' + status;
+    scanStatus.textContent = status === 'ready' ? 'Ready to Scan' : 
+                             status === 'cooldown' ? 'Cooldown' : 'Unknown ID';
+    scanStatus.style.color = status === 'ready' ? 'var(--status-green)' :
+                             status === 'cooldown' ? 'var(--status-yellow)' : 'var(--status-red)';
+    
+    if (status !== 'cooldown') {
+        const existingTimer = document.getElementById('cooldownTimer');
+        if (existingTimer) existingTimer.remove();
+    }
+}
+
+function startCooldownTimer(seconds) {
+    let timeLeft = seconds;
+    updateCooldownTimer(timeLeft);
+
+    if (cooldownTimer) {
+        clearInterval(cooldownTimer);
+    }
+
+    cooldownTimer = setInterval(() => {
+        timeLeft--;
         updateCooldownTimer(timeLeft);
 
-        if (cooldownInterval) {
-            clearInterval(cooldownInterval);
+        if (timeLeft <= 0) {
+            clearInterval(cooldownTimer);
         }
+    }, 1000);
+}
 
-        cooldownInterval = setInterval(() => {
-            timeLeft--;
-            updateCooldownTimer(timeLeft);
+function updateCooldownTimer(seconds) {
+    const timerSpan = document.getElementById('cooldownTimer') || document.createElement('span');
+    timerSpan.id = 'cooldownTimer';
+    timerSpan.textContent = seconds > 0 ? \` (\${seconds})\` : '';
+    scanStatus.appendChild(timerSpan);
+}
 
-            if (timeLeft <= 0) {
-                clearInterval(cooldownInterval);
-            }
-        }, 1000);
-    }
+function updateTimer() {
+    seconds++;
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    elapsedTimeElement.textContent = 
+        \`\${hours.toString().padStart(2, '0')}:\${minutes.toString().padStart(2, '0')}:\${secs.toString().padStart(2, '0')}\`;
+}
 
-    function updateCooldownTimer(seconds) {
-        const timerSpan = document.getElementById('cooldownTimer') || document.createElement('span');
-        timerSpan.id = 'cooldownTimer';
-        timerSpan.textContent = seconds > 0 ? \` (\${seconds})\` : '';
-        scanStatus.appendChild(timerSpan);
-    }
-
-    // Initial status update
-    updateStatus('ready');
-
-    // Auto-scroll functionality
-    let scrollPosition = 0;
-    const scrollSpeed = 0.5;
-
-    function scrollList() {
-        scrollPosition += scrollSpeed;
-        const tableContainer = document.querySelector('.scrolling-table-container');
-        if (scrollPosition >= tableContainer.scrollHeight - tableContainer.clientHeight) {
-            scrollPosition = 0;
-        }
-        tableContainer.scrollTop = scrollPosition;
-        requestAnimationFrame(scrollList);
-    }
-
-    // Start auto-scroll after a short delay
-    setTimeout(scrollList, 1000);
-
-    // Pause auto-scroll on hover
+function scrollList() {
+    scrollPosition += scrollSpeed;
     const tableContainer = document.querySelector('.scrolling-table-container');
-    tableContainer.addEventListener('mouseenter', () => {
-        scrollSpeed = 0;
-    });
-    tableContainer.addEventListener('mouseleave', () => {
-        scrollSpeed = 0.5;
-    });
-    </script>
+    if (scrollPosition >= tableContainer.scrollHeight - tableContainer.clientHeight) {
+        scrollPosition = 0;
+    }
+    tableContainer.scrollTop = scrollPosition;
+    requestAnimationFrame(scrollList);
+}
+</script>
 </body>
 </html>
     `;
@@ -667,6 +811,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial focus on sNumberInput
     sNumberInput.focus();
 
+    initializeBoxes();
     loadSavedData();
     setupPeriodicRefresh();
 
