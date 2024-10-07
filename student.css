@@ -337,21 +337,9 @@ h1, h2 {
 }
 
 .btn-download {
-    max-width: 1000px;
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 14px;
-    padding: 8px 16px;
-    border-radius: 20px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 1000px;
     width: 100%;
-    margin: 0 auto;
-    display: block;
+    max-width: 1000px;
+    margin-top: 20px;
 }
 
 .delete-btn {
