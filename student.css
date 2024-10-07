@@ -1,0 +1,530 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+:root {
+    --primary-color: #4a90e2;
+    --secondary-color: #f0f4f8;
+    --text-color: #333;
+    --border-color: #ddd;
+    --hover-color: #357abd;
+    --error-color: #e74c3c;
+    --delete-button-color: #ff4d4d;
+    --delete-button-hover: #ff3333;
+    --delete-button-active: #e60000;
+    --highlight-color: #e6f2ff;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to right, #a8d0e6, #f0f4f8);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 20px auto;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.1), 0 10px 10px rgba(0,0,0,0.08);
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+.login-container {
+    width: 90%;
+    max-width: 500px;
+    margin: 20px auto;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.1), 0 10px 10px rgba(0,0,0,0.08);
+    padding: 40px;
+    box-sizing: border-box;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.login-card {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.login-card h2 {
+    transition: color 0.3s ease;
+}
+
+.login-container:hover .login-card h2 {
+    color: var(--primary-color);
+}
+
+/* Ensure child elements don't interfere with hover state */
+.login-container * {
+    pointer-events: none;
+}
+
+/* Re-enable pointer events on interactive elements */
+.login-container input,
+.login-container button {
+    pointer-events: auto;
+}
+
+h1, h2 {
+    color: var(--text-color);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-group i {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    color: #999;
+    z-index: 1;
+}
+
+.login-form input,
+.modern-input,
+#filterInput,
+#sNumberInput {
+    width: 100%;
+    padding: 12px 12px 12px 40px;
+    border: 2px solid var(--border-color);
+    border-radius: 50px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.login-form input:focus,
+.modern-input:focus,
+#filterInput:focus,
+#sNumberInput:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 10px rgba(74, 144, 226, 0.3);
+    outline: none;
+}
+
+.btn-login,
+.btn-action,
+.btn-download {
+    padding: 12px 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.btn-login {
+    width: 100%;
+}
+
+.btn-action {
+    min-width: 200px;
+}
+
+.btn-login:hover,
+.btn-action:hover,
+.btn-download:hover {
+    background-color: var(--hover-color);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(74, 144, 226, 0.4);
+}
+
+.login-error {
+    color: var(--error-color);
+    margin-top: 10px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.centered-instruction {
+    text-align: center;
+    font-size: 1.1em;
+    color: var(--text-color);
+    margin: 20px 0;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+/* System Fields Styling */
+.upload-form,
+.filter-container {
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+/* File input styling */
+.file-input-wrapper {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    border: 2px solid var(--border-color);
+    border-radius: 50px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    box-sizing: border-box;
+}
+
+.file-input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 3;
+}
+
+.file-input-label {
+    position: absolute;
+    left: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--primary-color);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 25px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 2;
+    white-space: nowrap;
+}
+
+.file-name {
+    margin-left: 150px;
+    font-size: 16px;
+    color: #000;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+}
+
+.file-input-wrapper i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    z-index: 2;
+}
+
+/* S Number input styling */
+#sNumberInput {
+    width: 100%;
+    height: 50px;
+    padding: 12px 12px 12px 40px;
+    border: 2px solid var(--border-color);
+    border-radius: 50px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+#sNumberInput:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 10px rgba(74, 144, 226, 0.3);
+    outline: none;
+}
+
+/* Ensure consistent styling for both input containers */
+.upload-form,
+.scanner-form {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+/* Table Styling */
+.table-container {
+    overflow-x: auto;
+}
+
+.attendance-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    table-layout: fixed;
+}
+
+.attendance-table th,
+.attendance-table td {
+    padding: 15px;
+    text-align: center;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.attendance-table th {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 500;
+}
+
+.attendance-table td {
+    background-color: #ffffff;
+    transition: background-color 0.3s ease;
+}
+
+.attendance-table td:hover {
+    background-color: var(--highlight-color);
+}
+
+.attendance-table tr {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.attendance-table tr:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    background-color: var(--highlight-color);
+}
+
+.attendance-table th:nth-child(1),
+.attendance-table td:nth-child(1) {
+    width: 30%;
+}
+
+.attendance-table th:nth-child(2),
+.attendance-table td:nth-child(2),
+.attendance-table th:nth-child(3),
+.attendance-table td:nth-child(3) {
+    width: 25%;
+}
+
+.attendance-table th:nth-child(4),
+.attendance-table td:nth-child(4) {
+    width: 20%;
+}
+
+.btn-download {
+    max-width: 1000px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 1000px;
+    width: 100%;
+    margin: 0 auto;
+    display: block;
+}
+
+.delete-btn {
+    background-color: var(--delete-button-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100px;
+    width: 100%;
+    margin: 0 auto;
+    display: block;
+}
+
+.delete-btn:hover {
+    background-color: var(--delete-button-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.delete-btn:active {
+    background-color: var(--delete-button-active);
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.highlighted-row {
+    background-color: var(--highlight-color) !important;
+}
+
+/* Animations */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+    20%, 40%, 60%, 80% { transform: translateX(10px); }
+}
+
+.shake {
+    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+/* Lockdown Browser Styles */
+.fullscreen-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    flex-direction: column;
+    align-items: center;
+    z-index: 9999;
+}
+
+.lockdown-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.lockdown-header h1 {
+    margin: 0;
+    flex-grow: 1;
+    text-align: center;
+}
+
+.qr-code {
+    width: 100px;
+    height: 100px;
+}
+
+.qr-code img {
+    width: 100%;
+    height: 100%;
+}
+
+.fullscreen-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    padding: 20px;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.scrolling-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.scrolling-table th,
+.scrolling-table td {
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    text-align: left;
+}
+
+.scrolling-table th {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+#scanInstruction {
+    font-size: 24px;
+    color: var(--text-color);
+    margin-top: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Responsive design */
+@media screen and (max-width: 768px) {
+    .container, .login-container {
+        padding: 20px;
+    }
+
+    .btn-action, .btn-download {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    .attendance-table th,
+    .attendance-table td {
+        padding: 10px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .attendance-table th,
+    .attendance-table td {
+        padding: 10px;
+    }
+
+    .file-input-label {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .file-name {
+        font-size: 14px;
+    }
+
+    #scanInstruction {
+        font-size: 20px;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+.highlighted-cell {
+    background-color: var(--highlight-color) !important;
+    transition: background-color 0.3s ease;
+}

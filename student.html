@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PVHS Student System</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>  
+    <!-- Login Form -->
+    <div id="loginContainer" class="login-container">
+        <div class="login-card">
+            <h2>Login to PVHS Student System</h2>
+            <form id="loginForm" class="login-form">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="username" placeholder="Username" required autofocus>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn-login">Login</button>
+                <p id="loginError" class="login-error" style="display: none;">Invalid username or password</p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Content (Hidden until login) -->
+    <div id="appContainer" class="container" style="display: none;">
+        <h1>PVHS Student System</h1>
+        <p class="centered-instruction">Upload an Excel File for Student Data and Activate Browser</p>
+        
+        <form id="uploadForm" class="upload-form">
+            <div class="file-input-wrapper">
+                <i class="fas fa-file-excel"></i>
+                <input type="file" id="fileUpload" accept=".xlsx" class="file-input" />
+                <label for="fileUpload" class="file-input-label">Choose file</label>
+                <span class="file-name">No Excel file selected</span>
+            </div>
+        </form>
+
+        <div class="filter-container">
+            <div class="input-group">
+                <i class="fas fa-search"></i>
+                <input type="text" id="filterInput" placeholder="Filter by Name, Lab, or Seat Number" class="modern-input">
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <button id="finalizeBtn" class="btn-action"><i class="fas fa-check"></i> Confirm Data</button>
+            <button id="revertBtn" class="btn-action"><i class="fas fa-undo"></i> Revert to Original Data</button>
+            <button id="activateLockdownBtn" class="btn-action"><i class="fas fa-expand"></i> Activate FullScreen Browser</button>
+        </div>
+
+        <h2>Management Table</h2>
+        <div class="table-container">
+            <table id="liveAttendanceTable" class="attendance-table">
+                <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Lab</th>
+                        <th>Seat Number</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="attendanceTableBody">
+                    <!-- Table rows will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+
+        <button id="downloadExcelBtn" class="btn-download"><i class="fas fa-download"></i> Download Updated Excel</button>
+    </div>
+
+    <!-- Hidden input for scanning the student ID -->
+    <input type="text" id="sNumberInput" style="opacity: 0; position: absolute;" autocomplete="off">
+
+    <!-- Fullscreen Modal for Lockdown Browser -->
+    <div id="lockdownBrowser" class="fullscreen-modal" style="display: none;">
+        <div class="lockdown-header">
+            <h1>Student Testing Data</h1>
+            <div class="qr-code">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=http://127.0.0.1:5500/tableview.html" alt="QR Code">
+            </div>
+        </div>
+        <div class="fullscreen-content">
+            <table class="scrolling-table">
+                <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Lab</th>
+                        <th>Seat Number</th>
+                    </tr>
+                </thead>
+                <tbody id="scrollingListBody">
+                    <!-- This will be dynamically populated -->
+                </tbody>
+            </table>
+            <p id="scanInstruction">Scan ID Here!</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <script src="student.js"></script>
+</body>
+</html>
