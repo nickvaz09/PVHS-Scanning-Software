@@ -5,22 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PVHS Scanning System</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
-<body>  
-    <!-- Login Form -->,
+<body>
+    <!-- Login Form -->
     <div id="loginContainer" class="login-container">
         <div class="login-card">
-            <h2>Login to PVHS Scanning System</h2>
+           <h2>Login to PVHS Scanning System<h2>
             <form id="loginForm" class="login-form">
-                <div class="input-wrapper">
-                    <i class="icon-user"></i>
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
                     <input type="text" id="username" placeholder="Username" required autofocus>
                 </div>
-                <div class="input-wrapper">
-                    <i class="icon-lock"></i>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
                     <input type="password" id="password" placeholder="Password" required>
                 </div>
-                <button type="submit">Login</button>
+                <button type="submit" class="btn-login">Login</button>
                 <p id="loginError" class="login-error" style="display: none;">Invalid username or password</p>
             </form>
         </div>
@@ -31,60 +32,65 @@
         <h1>PVHS Scanning System</h1>
         <p>Upload an Excel File for Student Data and Then Scan the Student ID</p>
 
-        <!-- Excel File Upload -->
-        <form id="uploadForm" class="upload-form">
-            <label for="fileUpload" class="file-label">Upload Student Data (Excel):</label>
-            <input type="file" id="fileUpload" accept=".xlsx" class="file-input modern-input" />
-        </form>
+        <!-- Excel File Field -->
+        <div class="input-group file-input-wrapper">
+            <i class="fas fa-file-excel"></i>
+            <input type="file" id="fileUpload" accept=".xlsx" class="file-input" />
+            <label for="fileUpload" class="file-input-label">Choose file</label>
+            <span class="file-name">No Excel file selected</span>
+        </div>
 
         <!-- S Number Input Field for Scanning -->
         <form id="scanForm" class="scanner-form">
-            <label for="sNumberInput" class="input-label">Scan S Number:</label>   
-            <input type="text" id="sNumberInput" placeholder="Waiting for scan..." autofocus autocomplete="off" class="input-field modern-input" />
+            <div class="input-group">
+            <i class="fas fa-qrcode"></i>
+            <input type="text" id="sNumberInput" placeholder="Scan S Number" autofocus autocomplete="off" class="modern-input" />
+            </div>
         </form>
 
         <!-- Unified Search Filter -->
-        <div class="filter-container" style="text-align: center;"> 
-            <label for="filterInput">Filter Data:</label>
-            <input type="text" id="filterInput" placeholder="Filter by Name..." class="modern-input" style="margin-top: 10px;"> 
+        <div class="filter-container">
+            <div class="input-group">
+                <i class="fas fa-search"></i>
+                <input type="text" id="filterInput" placeholder="Filter by Name, Seat, or Lab.." class="modern-input">
+            </div>
         </div>
 
-        <!-- Action Buttons Below the Filter -->
+        <!-- Action Buttons -->
         <div class="action-buttons">
-            <button id="finalizeBtn" class="advanced-btn">Confirm Data</button>
-            <button id="revertBtn" class="advanced-btn">Revert to Original Data</button>
-            <button id="modeToggleBtn" class="advanced-btn">Switch to Check-Out Mode</button>
+            <button id="finalizeBtn" class="btn-action"><i class="fas fa-check"></i> Confirm Data</button>
+            <button id="revertBtn" class="btn-action"><i class="fas fa-undo"></i> Revert to Original Data</button>
+            <button id="modeToggleBtn" class="btn-action"><i class="fas fa-exchange-alt"></i> Switch Mode</button>
         </div>
 
         <!-- Live Attendance Table -->
-        <h2>Live Attendance Table</h2>
-        <table id="liveAttendanceTable" class="attendance-table">
-            <thead>
-                <tr>
-                    <th>Full Name</th>
-                    <th>Lab</th>
-                    <th>Seat Number</th>
-                    <th>Check-In Time</th>
-                    <th class="check-out-time">Check-Out Time</th>
-                    <th class="total-time">Total Time</th>
-                    <th>Attendance</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="attendanceTableBody"></tbody>
-        </table>
+        <h2>Live Management Table</h2>
+        <div class="table-container">
+            <table id="liveAttendanceTable" class="attendance-table">
+                <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Lab</th>
+                        <th>Seat Number</th>
+                        <th>Check-In Time</th>
+                        <th class="check-out-time">Check-Out Time</th>
+                        <th class="total-time">Total Time</th>
+                        <th>Attendance</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="attendanceTableBody"></tbody>
+            </table>
+        </div>
 
-        <!-- Download Excel Button Below the Table -->
-        <button id="downloadExcelBtn" class="advanced-btn small-btn">Download Updated Excel</button>
+        <!-- Download Excel Button -->
+        <button id="downloadExcelBtn" class="btn-download"><i class="fas fa-download"></i> Download Updated Excel</button>
     </div>
 
-    <!-- Fullscreen Modal for Student Information -->
+    <!-- Enhanced Fullscreen Modal for Student Information -->
     <div id="fullscreenModal" class="fullscreen-modal">
-        <div class="fullscreen-content">  
-            <h1 id="studentFullName"></h1>
-            <p id="studentLab"></p>
-            <p id="studentSeat"></p>
-            <p id="studentTimeIn"></p>
+        <div id="fullscreenContent" class="fullscreen-content">
+            <!-- Content will be dynamically inserted here -->
         </div>
     </div>
 
