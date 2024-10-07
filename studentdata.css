@@ -1,0 +1,221 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(to right, #a8d0e6, #f0f4f8);
+    transition: background 0.5s ease;
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.1), 0 10px 10px rgba(0,0,0,0.08);
+    padding: 2rem;
+    width: 100%;
+    max-width: 350px;
+    transition: all 0.3s ease;
+}
+
+.container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2), 0 15px 15px rgba(0,0,0,0.15);
+}
+
+.login-container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+    transition: color 0.3s ease;
+}
+
+.login-container:hover h2 {
+    color: #4a90e2;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.input-group i {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: #999;
+    transition: color 0.3s ease;
+}
+
+.input-group input {
+    width: 90%;
+    padding: 12px 12px 12px 40px;
+    border: 2px solid #ddd;
+    border-radius: 50px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 10px rgba(74, 144, 226, 0.3);
+    outline: none;
+}
+
+.input-group input:focus + i {
+    color: #4a90e2;
+}
+
+.btn-login, .btn-logout {
+    width: 100%;
+    padding: 12px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    position: relative;
+}
+
+.btn-login:hover, .btn-logout:hover {
+    background-color: #357abd;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(74, 144, 226, 0.4);
+}
+
+.btn-login:active, .btn-logout:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 5px rgba(74, 144, 226, 0.4);
+}
+
+.btn-login::after, .btn-logout::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0, 0);
+        opacity: 1;
+    }
+    20% {
+        transform: scale(25, 25);
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: scale(40, 40);
+    }
+}
+
+.btn-login:focus:not(:active)::after, .btn-logout:focus:not(:active)::after {
+    animation: ripple 1s ease-out;
+}
+
+#studentDataDisplay {
+    margin-top: 2rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    margin-top: 1rem;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: none;
+}
+
+th {
+    background-color: #4a90e2;
+    color: white;
+    border-radius: 10px 10px 0 0;
+}
+
+tr {
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+tr:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.btn-logout {
+    margin-top: 1rem;
+    background-color: #e74c3c;
+}
+
+.btn-logout:hover {
+    background-color: #c0392b;
+}
+
+.disclaimer {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-style: italic;
+}
+
+.btn-pass {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+}
+
+.btn-wallet:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#studentDataDisplay {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.shake {
+    animation: shake 0.5s ease-in-out;
+}
