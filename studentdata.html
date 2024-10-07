@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Data Access</title>
+    <link rel="stylesheet" href="studentdata.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="login-container" id="loginForm">
+            <h2>Student Data Access</h2>
+            <form>
+                <div class="input-group">
+                    <i class="fas fa-id-card"></i>
+                    <input type="text" id="sNumber" placeholder="Enter your Student ID" required>
+                </div>
+                <button type="button" id="loginButton" class="btn-login">Access My Data</button>
+            </form>
+        </div>
+        <div id="studentDataDisplay" style="display:none;">
+            <h2>Your Data</h2>
+            <p class="disclaimer">Note: This data may not be up-to-date. The most accurate information will be available closer to the test date.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Lab</th>
+                        <th>Seat Number</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Student data will be displayed here -->
+                </tbody>
+            </table>
+            <button id="viewPassBtn" class="btn-login">View Digital Pass</button>
+            <button id="logoutButton" class="btn-logout">Logout</button>
+        </div>
+    </div>
+    <script src="studentdata.js"></script>
+</body>
+</html>
