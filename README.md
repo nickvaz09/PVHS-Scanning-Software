@@ -1,12 +1,12 @@
 # PVHS-Scanning-Software
 
-Overview
+# Overview
 
 The PVHS Scanning System is a proprietary web-based application designed for efficient, real-time data monitoring and attendance management, tailored to educational environments. This system facilitates the seamless collection and management of student data through manual and automated processes, enabling administrators to streamline attendance tracking using modern technology.
 
 This system employs advanced scanning mechanisms for student identification, live data processing, and secure data handling, with the ability to upload and manage Excel files. The application ensures persistent data storage, using local storage to allow users to continue their session seamlessly after closing and reopening the application.
 
-Features
+# Features
 
 	•	Excel File Upload: Easily upload and manage student data through an intuitive Excel-based interface.
  
@@ -20,7 +20,7 @@ Features
  
 	•	Data Finalization and Revert: Finalize current data with the ability to revert to the original dataset as needed.
 
-Legal Notice
+# Legal Notice
 
 This project and all associated source code, files, and documentation are protected under the GNU Affero General Public License v3.0 (AGPL-3.0). As such:
 
@@ -32,7 +32,7 @@ This project and all associated source code, files, and documentation are protec
 
 By accessing or interacting with this project, you agree to comply fully with the terms and restrictions outlined under the AGPL-3.0 license, including maintaining the integrity of the source code and not using it for any purposes other than those expressly permitted by the owner.
 
-License
+# License
 
 This project is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0). For more details, see the full license text at https://www.gnu.org/licenses/agpl-3.0.html
 
